@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_articulos"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Artículos" />
+        <item
+            android:id="@+id/nav_perfiles"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Perfiles" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_ajustes"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Ajustes" />
+            <item
+                android:id="@+id/nav_condiciones"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Condiciones" />
+        </menu>
+    </item>
+
+</menu>
