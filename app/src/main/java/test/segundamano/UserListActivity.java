@@ -1,12 +1,15 @@
 package test.segundamano;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ScrollView;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -80,22 +83,14 @@ public class UserListActivity extends AppCompatActivity {
             public void onCancelled(FirebaseError firebaseError) {}
         });
 
-        /*
-        gridDiscos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        gridUsuarios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {  // En caso de pulsar sobre un album
-
-                // Subimos al inicio del ScrollView
-                ScrollView scrollLetra = (ScrollView) getView().findViewById(R.id.discografia_scrollViewDiscografia);
-                scrollLetra.fullScroll(ScrollView.FOCUS_UP);
-
-                Item disco = items.get(position);    // Sacamos los discos del elemento que hayamos pulsado
-
-                ((MainActivity) getActivity()).setSearchedArtist(artist);
-                ((MainActivity) getActivity()).setSearchedAlbum(disco);
-                ((MainActivity) getActivity()).abrirDisco();
+                Intent perfilesIntent = new Intent().setClass(UserListActivity.this, UserActivity.class);
+                startActivity(perfilesIntent);
             }
-        })*/
+        });
 
     }
 

@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_articulos) {
             // Handle the camera action
         } else if (id == R.id.nav_perfiles) {
-                Intent perfilesIntent = new Intent().setClass(MainActivity.this, UserListActivity.class);
+            Intent perfilesIntent = new Intent().setClass(MainActivity.this, UserListActivity.class);
             startActivity(perfilesIntent);
 
         } else if (id == R.id.nav_ajustes) {
