@@ -29,7 +29,7 @@ public class FirebaseConfig extends Application {
 
         // Referncias de firebase
         mainReference = new Firebase("https://prueba1-5ba66.firebaseio.com/");
-            referenciaListaUsuarios = new Firebase("https://prueba1-5ba66.firebaseio.com//Usuarios");
+        referenciaListaUsuarios = new Firebase("https://prueba1-5ba66.firebaseio.com//Usuarios");
 
     }
 

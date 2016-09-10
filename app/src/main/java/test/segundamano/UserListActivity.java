@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -23,6 +24,7 @@ import java.util.List;
 import test.segundamano.Adapters.UserListAdapter;
 import test.segundamano.Firebase.FirebaseConfig;
 import test.segundamano.Firebase.Usuario;
+import test.segundamano.Firebase.UsuarioPrev;
 
 public class UserListActivity extends AppCompatActivity {
 
@@ -31,10 +33,12 @@ public class UserListActivity extends AppCompatActivity {
 
     // Adapter y diferentes contenedores para la lista de artistas
     private UserListAdapter myGridAdapter;
-    List<String> listInfoUsuarios = new ArrayList<>();
 
     // ArrayList con informacion de los usuarios
-    ArrayList<Usuario> listaUsuarios = new ArrayList<>();
+    ArrayList<UsuarioPrev> listaUsuarios = new ArrayList<>();
+    List<String> listKeyUsuarios = new ArrayList<>();
+
+    List<String> listInfoUsuarios = new ArrayList<>();
 
     // GridView
     GridView gridUsuarios;
@@ -71,11 +75,14 @@ public class UserListActivity extends AppCompatActivity {
                 listaUsuarios.clear();
 
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    Usuario usuario = userSnapshot.getValue(Usuario.class);
-                    listaUsuarios.add(usuario);
-                    listInfoUsuarios.add(usuario.getNombre() + "-" + usuario.getRutaImagen());
-                    setGridViewHeightBasedOnChildren(gridUsuarios, 2);
 
+                    UsuarioPrev usuario = userSnapshot.getValue(UsuarioPrev.class);
+
+                    listaUsuarios.add(usuario);
+                    listInfoUsuarios.add(usuario.getNombre() + "-" + usuario.getRutaImagen() + "-" + usuario.getEdad() + "-" + usuario.getResumen());
+                    listKeyUsuarios.add(userSnapshot.getKey());
+
+                    setGridViewHeightBasedOnChildren(gridUsuarios, 2);
                 }
             }
 
@@ -83,12 +90,16 @@ public class UserListActivity extends AppCompatActivity {
             public void onCancelled(FirebaseError firebaseError) {}
         });
 
-
+        // En caso de pulsar sobre un perfil
         gridUsuarios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {  // En caso de pulsar sobre un album
-                Intent perfilesIntent = new Intent().setClass(UserListActivity.this, UserActivity.class);
-                startActivity(perfilesIntent);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                final String keyUsuario = listKeyUsuarios.get(position);
+
+                Intent pasoDeListAUser = new Intent(UserListActivity.this, UserActivity.class);
+                pasoDeListAUser.putExtra("paquetitoKey", keyUsuario);
+                startActivity(pasoDeListAUser);
             }
         });
 

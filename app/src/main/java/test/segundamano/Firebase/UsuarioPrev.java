@@ -3,22 +3,21 @@ package test.segundamano.Firebase;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * Created by mireia on 9/09/16.
+ * Created by mireia on 10/09/16.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 
-public class Usuario {
+public class UsuarioPrev {
 
     // String
     private String nombre = "Undefined";        // nombre del usuario
     private String edad = "Undefined";          // edad del usuario
-    private String descripcion = "Undefined";   // Descripción usuario
-    private String resumen = "Undeifned";       // Resumen
+    private String resumen = "Undefined";       // Descripción usuario
     private String rutaImagen = "Undefined";    // Ruta en la que se alamcenará la ruta del usuario
 
     // Constructores
 
-    public Usuario() {}
+    public UsuarioPrev() {}
 
     // Getters
 
@@ -30,16 +29,12 @@ public class Usuario {
         return edad;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String getResumen() {
+        return resumen;
     }
 
     public String getRutaImagen() {
         return rutaImagen;
-    }
-
-    public String getResumen() {
-        return resumen;
     }
 
     // Setters
@@ -52,15 +47,12 @@ public class Usuario {
         this.edad = edad;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setResumen(String resumen) {
+        this.resumen = resumen;
     }
 
     public void setRutaImagen(String rutaImagen) {
         this.rutaImagen = rutaImagen;
     }
 
-    public void setResumen(String resumen) {
-        this.resumen = resumen;
-    }
 }

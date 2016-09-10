@@ -32,8 +32,12 @@ public class UserListAdapter extends ArrayAdapter<String> {
         // Creamos el objeto en la posición correspondiente
         final String item = getItem(position);
 
-        final String nombrePerfil = item.split("-")[0];
-        final String URLimagen = item.split("-")[1];
+        final String[] splitArray = item.split("-");
+
+        final String nombrePerfil = splitArray[0];
+        final String URLimagen = splitArray[1];
+        final String edad = splitArray[2];
+        final String resumen = splitArray[3];
 
         // Comprobamos si la view ya se ha usado antes, si no, la inflamos (es una buena practica y ahorramos recursos)
         if (convertView == null) {
@@ -43,7 +47,10 @@ public class UserListAdapter extends ArrayAdapter<String> {
 
         // Asociamos cada variable a su elemento del layout
         TextView nombreArtista = (TextView) convertView.findViewById(R.id.adapter_nombrePerfil);
-        nombreArtista.setText(nombrePerfil);
+        nombreArtista.setText(nombrePerfil + " - " + edad);
+
+        TextView textResumen = (TextView) convertView.findViewById(R.id.adapter_resumen);
+        textResumen.setText(resumen);
 
         // Le damos la iamgen
         ImageView imagenPerfil = (ImageView) convertView.findViewById(R.id.adapter_imagenPerfil);
