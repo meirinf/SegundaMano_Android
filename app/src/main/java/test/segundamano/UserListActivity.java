@@ -1,7 +1,6 @@
 package test.segundamano;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -9,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -18,12 +15,10 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import test.segundamano.Adapters.UserListAdapter;
 import test.segundamano.Firebase.FirebaseConfig;
-import test.segundamano.Firebase.Usuario;
 import test.segundamano.Firebase.UsuarioPrev;
 
 public class UserListActivity extends AppCompatActivity {
@@ -35,9 +30,7 @@ public class UserListActivity extends AppCompatActivity {
     private UserListAdapter myGridAdapter;
 
     // ArrayList con informacion de los usuarios
-    ArrayList<UsuarioPrev> listaUsuarios = new ArrayList<>();
     List<String> listKeyUsuarios = new ArrayList<>();
-
     List<String> listInfoUsuarios = new ArrayList<>();
 
     // GridView
@@ -71,38 +64,40 @@ public class UserListActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                // Limpiamos el array de usuarios por si se han cargado datos anteriorimente
-                listaUsuarios.clear();
-
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
 
+                    // Usuario extraído de Firebase
                     UsuarioPrev usuario = userSnapshot.getValue(UsuarioPrev.class);
 
-                    listaUsuarios.add(usuario);
                     listInfoUsuarios.add(usuario.getNombre() + "-" + usuario.getRutaImagen() + "-" + usuario.getEdad() + "-" + usuario.getResumen());
                     listKeyUsuarios.add(userSnapshot.getKey());
 
+                    // Desplegamos el grid en la longitud necesaria para que se muestren todos sus elementos
                     setGridViewHeightBasedOnChildren(gridUsuarios, 2);
                 }
+
+                // En caso de pulsar sobre un perfil
+                gridUsuarios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        final String keyUsuario = listKeyUsuarios.get(position);
+                        final String datosUsuario = listInfoUsuarios.get(position);
+
+                        // Preparamos el Intent en el que pasaremos los datos
+                        // del activity de la lista al de detalles de usuario
+
+                        Intent pasoDeListAUser = new Intent(UserListActivity.this, UserActivity.class);
+                        pasoDeListAUser.putExtra("paquetitoKey", keyUsuario);
+                        pasoDeListAUser.putExtra("paquetitoDatos", datosUsuario);
+                        startActivity(pasoDeListAUser);
+                    }
+                });
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {}
         });
-
-        // En caso de pulsar sobre un perfil
-        gridUsuarios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                final String keyUsuario = listKeyUsuarios.get(position);
-
-                Intent pasoDeListAUser = new Intent(UserListActivity.this, UserActivity.class);
-                pasoDeListAUser.putExtra("paquetitoKey", keyUsuario);
-                startActivity(pasoDeListAUser);
-            }
-        });
-
     }
 
     @Override

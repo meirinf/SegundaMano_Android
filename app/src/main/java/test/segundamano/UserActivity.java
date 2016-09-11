@@ -1,25 +1,31 @@
 package test.segundamano;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import java.util.ArrayList;
+import java.util.List;
 
 import test.segundamano.Firebase.FirebaseConfig;
-import test.segundamano.Firebase.Usuario;
 
 public class UserActivity extends AppCompatActivity {
+
+    private ViewPager viewPager;        // Custom viewPager en el que usaremos las pestanyas
+    private TabLayout pestanyas;        // TabLayout que acoplramos al view
 
     FirebaseConfig config;                      // Configuración de firebase
     private Firebase referenciaListaUsuarios;   // Apunta a la lista de usuarios
@@ -28,8 +34,6 @@ public class UserActivity extends AppCompatActivity {
     TextView resumenUser;
     ImageView imagen;
 
-    Usuario usuarioFinal;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,10 +41,9 @@ public class UserActivity extends AppCompatActivity {
 
         // Toolbar
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        // Otras vistas
-        descripcion = (TextView) findViewById(R.id.textoUser);
-        resumenUser = (TextView) findViewById(R.id.resumenUsers);
+        // Imagen collapsible del toolbar
         imagen = (ImageView) findViewById(R.id.backdrop);
 
         // FAB
@@ -53,6 +56,14 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
+        // Declaramos el viewPager y el TAB
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        pestanyas = (TabLayout) findViewById(R.id.pestanyas);
+
+        // Acoplamos el TAB al viewPager
+        setupViewPager(viewPager);
+        pestanyas.setupWithViewPager(viewPager);
+
         // Flecha para volver hacia atras
         //setSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -60,6 +71,7 @@ public class UserActivity extends AppCompatActivity {
         // Recibimos el paquete con la key del usuario que queremos cargar
 
         final String keyUsuario;
+        final String datosUsuarios;
 
         if (savedInstanceState == null) {
 
@@ -67,71 +79,81 @@ public class UserActivity extends AppCompatActivity {
 
             if(paqueteRecibido != null) {
                 keyUsuario = paqueteRecibido.getString("paquetitoKey");
-            }
-            else{
-                keyUsuario = "Undefined";
-            }
-        }
-        else {
-            keyUsuario = (String) savedInstanceState.getSerializable("paquetitoKey");
-        }
+                datosUsuarios = paqueteRecibido.getString("paquetitoDatos");
 
+                // Descomponemos los datos del usuario recogidos del paquete
+                final String[] splitArray = datosUsuarios.split("-");
 
-        // Damos valor a nuestras variables de firebase
-        config = (FirebaseConfig) getApplication();
-        referenciaListaUsuarios = config.getReferenciaListaUsuarios();
-
-        // Descargamos la lista de usuarios
-        referenciaListaUsuarios.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-
-                    try{
-
-                        if(userSnapshot.getKey().toString().contains(keyUsuario)){
-
-                            Usuario usuario = userSnapshot.getValue(Usuario.class);
-
-                            // Reconstruimos el objeto asíncronamente
-                            Usuario usr = new Usuario();
-
-                            usr.setDescripcion(usuario.getDescripcion());
-                            usr.setEdad(usuario.getEdad());
-                            usr.setNombre(usuario.getNombre());
-                            usr.setResumen(usuario.getResumen());
-                            usr.setRutaImagen(usuario.getRutaImagen());
-
-                            // Una vez construido, ya estamos seguros de tener los datos y fijamos el valor
-                            usuarioFinal = usr;
-
-                            break;
-                        }
-
-                    }catch (NullPointerException e){}
-                }
-
-                // Aplicamos los cambios a la interfaz
-
-                descripcion.setText(usuarioFinal.getDescripcion());
-                resumenUser.setText(usuarioFinal.getResumen());
-
+                // Asignamos la imagen al toolbar
                 Picasso.with(getApplicationContext())
-                        .load(usuarioFinal.getRutaImagen())
+                        .load(splitArray[1])
                         .centerCrop()
                         .fit()
                         .into(imagen);
 
-
-                setSupportActionBar(toolbar);
-                getSupportActionBar().setTitle(usuarioFinal.getNombre());
+                // Le damos titulo al toolbar
+                getSupportActionBar().setTitle(splitArray[0]);
             }
+            else{
+                keyUsuario = "Undefined";
+                datosUsuarios = "Unknown";
+            }
+        }
+        else {
+            keyUsuario = (String) savedInstanceState.getSerializable("paquetitoKey");
+            datosUsuarios = (String) savedInstanceState.getSerializable("paquetitoDatos");
+        }
+    }
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {}
-        });
+    /*
+     Con este metodo personalizado acoplamos las pestanyas a nuestro viewPager
+    */
+    private void setupViewPager(ViewPager viewPager) {
 
+        // Declaramos el adapter
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        // Le acoplamos tantas pestanyas como queramos
+        adapter.addFragment(new UserDetails(), "Detalles");
+        adapter.addFragment(new UserDetails(), "Articulos");
+
+        pestanyas.setSelectedTabIndicatorColor(Color.parseColor("#FFFFFF"));
+
+        // Acoplamos del todo las pestanyas y las activamos
+        viewPager.setAdapter(adapter);
+        // viewPager.setPagingEnabled(false);
+    }
+
+    // Declaramos el ViewPagerAdapter
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+
+        // Dos listas con los fragmentos que tendremos en nuestras pestanyas y los titulos de cada una
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
     }
 
     @Override

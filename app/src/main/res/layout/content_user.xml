@@ -12,32 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="500dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:text="AAA"
-            android:id="@+id/textoUser"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:layout_marginRight="@dimen/text_margin"
-            android:layout_marginTop="89dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="resumenUser"
-            android:id="@+id/resumenUsers"
-            android:gravity="center_horizontal"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="32dp"
-            android:layout_alignStart="@+id/textoUser"
-            android:layout_alignEnd="@+id/textoUser" />
 
     </RelativeLayout>
-
 
 
 </android.support.v4.widget.NestedScrollView>
