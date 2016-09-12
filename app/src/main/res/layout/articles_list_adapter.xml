@@ -12,8 +12,8 @@
     android:descendantFocusability="blocksDescendants">
 
     <android.support.v7.widget.CardView
-        android:layout_width="fill_parent"
-        android:layout_height="275dp"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
         card_view:cardBackgroundColor="@android:color/white"
         card_view:cardUseCompatPadding="true">
 
@@ -26,11 +26,11 @@
             android:descendantFocusability="blocksDescendants">
 
             <ImageView
-                android:layout_width="360dp"
-                android:layout_height="180dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:id="@+id/adapter_imagenUsuario"
+                android:layout_width="330dp"
+                android:layout_height="170dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:id="@+id/adapter_imagenArticulo"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
@@ -40,8 +40,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nombre Perfil"
-                android:id="@+id/adapter_nombreUsuario"
+                android:text="Nombre Artículo"
+                android:id="@+id/adapter_nombreArticulo"
                 android:textAlignment="gravity"
                 android:maxLines="2"
                 android:minLines="1"
@@ -52,21 +52,20 @@
                 android:textColor="#2e373f"
                 android:textIsSelectable="false"
                 android:gravity="center_horizontal"
-                android:layout_below="@+id/adapter_imagenUsuario"
-                android:layout_alignEnd="@+id/adapter_imagenUsuario"
-                android:layout_alignParentStart="true" />
+                android:layout_above="@+id/adapter_precio"
+                android:layout_alignEnd="@+id/adapter_imagenArticulo"
+                android:layout_alignStart="@+id/adapter_imagenArticulo" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Resumen"
-                android:id="@+id/adapter_descripcion"
-                android:layout_below="@+id/adapter_nombreUsuario"
+                android:text="Precio"
+                android:id="@+id/adapter_precio"
                 android:layout_alignParentStart="true"
+                android:layout_alignEnd="@+id/adapter_imagenArticulo"
                 android:gravity="center_horizontal"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentBottom="true" />
 
         </RelativeLayout>
 

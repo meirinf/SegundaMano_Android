@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -60,10 +61,6 @@ public class UserActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         pestanyas = (TabLayout) findViewById(R.id.pestanyas);
 
-        // Acoplamos el TAB al viewPager
-        setupViewPager(viewPager);
-        pestanyas.setupWithViewPager(viewPager);
-
         // Flecha para volver hacia atras
         //setSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -82,7 +79,7 @@ public class UserActivity extends AppCompatActivity {
                 datosUsuarios = paqueteRecibido.getString("paquetitoDatos");
 
                 // Descomponemos los datos del usuario recogidos del paquete
-                final String[] splitArray = datosUsuarios.split("-");
+                final String[] splitArray = datosUsuarios.split("666Separacion");
 
                 // Asignamos la imagen al toolbar
                 Picasso.with(getApplicationContext())
@@ -103,19 +100,25 @@ public class UserActivity extends AppCompatActivity {
             keyUsuario = (String) savedInstanceState.getSerializable("paquetitoKey");
             datosUsuarios = (String) savedInstanceState.getSerializable("paquetitoDatos");
         }
+
+        // Acoplamos el TAB al viewPager
+        setupViewPager(viewPager, keyUsuario);
+        pestanyas.setupWithViewPager(viewPager);
     }
 
     /*
      Con este metodo personalizado acoplamos las pestanyas a nuestro viewPager
     */
-    private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager(ViewPager viewPager, String key) {
 
         // Declaramos el adapter
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         // Le acoplamos tantas pestanyas como queramos
-        adapter.addFragment(new UserDetails(), "Detalles");
-        adapter.addFragment(new UserDetails(), "Articulos");
+
+        adapter.setKey(key);
+        adapter.addFragment("Detalles");
+        adapter.addFragment("Articulos");
 
         pestanyas.setSelectedTabIndicatorColor(Color.parseColor("#FFFFFF"));
 
@@ -127,8 +130,9 @@ public class UserActivity extends AppCompatActivity {
     // Declaramos el ViewPagerAdapter
     class ViewPagerAdapter extends FragmentPagerAdapter {
 
+        String key;
+
         // Dos listas con los fragmentos que tendremos en nuestras pestanyas y los titulos de cada una
-        private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
         public ViewPagerAdapter(FragmentManager manager) {
@@ -137,22 +141,41 @@ public class UserActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return mFragmentList.get(position);
+
+            if(mFragmentTitleList.get(position).equals("Detalles")){
+
+                UserDetails a = new UserDetails();
+
+                return a.newInstance(key);
+            }
+            else if (mFragmentTitleList.get(position).equals("Articulos")){
+
+                UserArticles b = new UserArticles();
+
+                return b.newInstance(key);
+            }
+
+            else{
+                return null;
+            }
         }
 
         @Override
         public int getCount() {
-            return mFragmentList.size();
+            return mFragmentTitleList.size();
         }
 
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
+        public void addFragment(String title) {
             mFragmentTitleList.add(title);
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
+        }
+
+        public void setKey(String key) {
+            this.key = key;
         }
     }
 
