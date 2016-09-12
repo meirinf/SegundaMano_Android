@@ -69,7 +69,7 @@ public class UserListActivity extends AppCompatActivity {
                     // Usuario extraído de Firebase
                     UsuarioPrev usuario = userSnapshot.getValue(UsuarioPrev.class);
 
-                    listInfoUsuarios.add(usuario.getNombre() + "-" + usuario.getRutaImagen() + "-" + usuario.getEdad() + "-" + usuario.getResumen());
+                    listInfoUsuarios.add(usuario.getNombre() + "666Separacion" + usuario.getRutaImagen() + "666Separacion" + usuario.getEdad() + "666Separacion" + usuario.getResumen());
                     listKeyUsuarios.add(userSnapshot.getKey());
 
                     // Desplegamos el grid en la longitud necesaria para que se muestren todos sus elementos
