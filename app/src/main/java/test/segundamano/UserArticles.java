@@ -74,6 +74,10 @@ public class UserArticles extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                // Limpiamos los list para evitar duplicados al recargar datos
+                listArticulos.clear();
+                listInfoArticulos.clear();
+
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
 
                     // Articulo extraído de Firebase

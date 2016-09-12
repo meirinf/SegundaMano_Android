@@ -64,6 +64,10 @@ public class UserListActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                // Limpiamos los list para evitar duplicados al recargar datos
+                listInfoUsuarios.clear();
+                listKeyUsuarios.clear();
+
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
 
                     // Usuario extraído de Firebase
