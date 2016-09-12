@@ -9,12 +9,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="500dp">
+        android:layout_height="500dp"
+        android:background="@color/backgrounds">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="200dp"
             android:text="AAA"
+            android:textColor="@color/white"
             android:id="@+id/textoUser"
             android:layout_marginLeft="@dimen/text_margin"
             android:layout_marginRight="@dimen/text_margin"
@@ -28,6 +30,7 @@
             android:layout_height="50dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="resumenUser"
+            android:textColor="@color/white"
             android:id="@+id/resumenUsers"
             android:gravity="center_horizontal"
             android:layout_alignParentTop="true"
