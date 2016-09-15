@@ -1,15 +1,10 @@
 package test.segundamano;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -20,16 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import test.segundamano.Adapters.ArticlesAdapter;
-import test.segundamano.Adapters.UserListAdapter;
 import test.segundamano.Firebase.Articulo;
 import test.segundamano.Firebase.FirebaseConfig;
-import test.segundamano.Firebase.Usuario;
 import test.segundamano.Firebase.UsuarioPrev;
 
-/**
- * Created by sergi on 12/09/16.
- */
-public class UserArticles extends Fragment {
+public class ArticlesActivity extends BaseDrawerActivity {
 
     FirebaseConfig config;                      // Configuración de firebase
     private Firebase referenciaListaUsuarios;   // Apunta a la lista de usuarios
@@ -44,33 +34,24 @@ public class UserArticles extends Fragment {
     String keyUsuario;
     GridView gridArticulos;
 
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        keyUsuario = getArguments().getString("keyFragment");
-    }
-
-    public View onCreateView(LayoutInflater inflater, ViewGroup contenedor, Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_user_articles, contenedor, false);
+        getLayoutInflater().inflate(R.layout.activity_articles, frameLayout);
 
         // Damos valor a nuestras variables de firebase
-        config = (FirebaseConfig) getActivity().getApplication();
+        config = (FirebaseConfig) this.getApplication();
         referenciaListaUsuarios = config.getReferenciaListaUsuarios();
 
         // Referencia a las vistas
-        gridArticulos = (GridView) view.findViewById(R.id.user_articles_grid);
+        gridArticulos = (GridView) findViewById(R.id.allarticles);
 
         // Setteamos el adapter
-        myGridAdapter = new ArticlesAdapter(getContext(), 0, listInfoArticulos); // Definimos nuestro adaptador
+        myGridAdapter = new ArticlesAdapter(this, 0, listInfoArticulos); // Definimos nuestro adaptador
         gridArticulos.setAdapter(myGridAdapter);
 
-        Firebase referenciaArticulosUsuario = new Firebase(referenciaListaUsuarios.getRef().toString() + "/" + keyUsuario + "/articulos");
-
         // Descargamos la lista de usuarios
-        referenciaArticulosUsuario.addValueEventListener(new ValueEventListener() {
+        referenciaListaUsuarios.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -80,14 +61,34 @@ public class UserArticles extends Fragment {
 
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
 
-                    // Articulo extraído de Firebase
-                    Articulo articulo = userSnapshot.getValue(Articulo.class);
+                    // Usuario extraído de Firebase
+                    UsuarioPrev usuario = userSnapshot.getValue(UsuarioPrev.class);
 
-                    listArticulos.add(articulo);
-                    listInfoArticulos.add(articulo.getNombre() + "666Separacion" + articulo.getFoto1() + "666Separacion" + articulo.getPrecio());
+                    keyUsuario = userSnapshot.getKey();
 
-                    // Desplegamos el grid en la longitud necesaria para que se muestren todos sus elementos
-                    setGridViewHeightBasedOnChildren(gridArticulos, 2);
+                    Firebase referenciaArticulosUsuario = new Firebase(referenciaListaUsuarios.getRef().toString() + "/" + keyUsuario + "/articulos");
+
+                    // Descargamos la lista de usuarios
+                    referenciaArticulosUsuario.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+
+                                // Articulo extraído de Firebase
+                                Articulo articulo = userSnapshot.getValue(Articulo.class);
+
+                                listArticulos.add(articulo);
+                                listInfoArticulos.add(articulo.getNombre() + "666Separacion" + articulo.getFoto1() + "666Separacion" + articulo.getPrecio());
+
+                                // Desplegamos el grid en la longitud necesaria para que se muestren todos sus elementos
+                                setGridViewHeightBasedOnChildren(gridArticulos, 2);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {}
+                    });
                 }
             }
 
@@ -95,17 +96,7 @@ public class UserArticles extends Fragment {
             public void onCancelled(FirebaseError firebaseError) {}
         });
 
-        return view;
-    }
 
-    public static UserArticles newInstance(String myValue) {
-
-        // You can add as many values as you need to initialize your fragment
-        UserArticles fragment = new UserArticles();
-        Bundle args = new Bundle();
-        args.putString("keyFragment", myValue);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     public void setGridViewHeightBasedOnChildren(GridView gridView, int columnas) {

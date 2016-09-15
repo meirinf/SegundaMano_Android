@@ -21,7 +21,7 @@ import test.segundamano.Adapters.UserListAdapter;
 import test.segundamano.Firebase.FirebaseConfig;
 import test.segundamano.Firebase.UsuarioPrev;
 
-public class UserListActivity extends AppCompatActivity {
+public class UserListActivity extends BaseDrawerActivity {
 
     FirebaseConfig config;                      // Configuración de firebase
     private Firebase referenciaListaUsuarios;   // Apunta a la lista de usuarios
@@ -39,10 +39,9 @@ public class UserListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_list);
+        getLayoutInflater().inflate(R.layout.activity_user_list, frameLayout);
 
         // Flecha para volver hacia atras
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         // Damos valor a nuestras variables de firebase
