@@ -13,6 +13,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/allarticles"
         android:numColumns="auto_fit"
+        android:gravity="center"
+        android:stretchMode="columnWidth"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 </RelativeLayout>

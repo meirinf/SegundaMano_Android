@@ -39,6 +39,9 @@ public class ArticlesActivity extends BaseDrawerActivity {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_articles, frameLayout);
 
+        // Damos el título de la toolbar
+        setTitle("Artículos");
+
         // Damos valor a nuestras variables de firebase
         config = (FirebaseConfig) this.getApplication();
         referenciaListaUsuarios = config.getReferenciaListaUsuarios();
@@ -95,8 +98,13 @@ public class ArticlesActivity extends BaseDrawerActivity {
             @Override
             public void onCancelled(FirebaseError firebaseError) {}
         });
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // to check current activity in the navigation drawer
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     public void setGridViewHeightBasedOnChildren(GridView gridView, int columnas) {

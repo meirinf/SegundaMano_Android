@@ -62,12 +62,15 @@ public class BaseDrawerActivity extends AppCompatActivity implements NavigationV
         if (id == R.id.nav_articulos) {
             Intent articulosIntent = new Intent().setClass(BaseDrawerActivity.this, ArticlesActivity.class);
             startActivity(articulosIntent);
-        } else if (id == R.id.nav_perfiles) {
+        }
+        else if (id == R.id.nav_perfiles) {
             Intent perfilesIntent = new Intent().setClass(BaseDrawerActivity.this, UserListActivity.class);
             startActivity(perfilesIntent);
-        } else if (id == R.id.nav_ajustes) {
+        }
+        else if (id == R.id.nav_ajustes) {
 
-        } else if (id == R.id.nav_condiciones) {
+        }
+        else if (id == R.id.nav_condiciones) {
 
         }
         drawerLayout.closeDrawer(GravityCompat.START);

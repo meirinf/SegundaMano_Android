@@ -13,20 +13,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import com.firebase.client.Firebase;
+
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
-
-import test.segundamano.Firebase.FirebaseConfig;
 
 public class UserActivity extends BaseDrawerActivity {
 
     private ViewPager viewPager;        // Custom viewPager en el que usaremos las pestanyas
     private TabLayout pestanyas;        // TabLayout que acoplramos al view
-
-    FirebaseConfig config;                      // Configuración de firebase
-    private Firebase referenciaListaUsuarios;   // Apunta a la lista de usuarios
 
     ImageView imagen;
 
@@ -84,7 +79,7 @@ public class UserActivity extends BaseDrawerActivity {
                         .into(imagen);
 
                 // Le damos titulo al toolbar
-                getSupportActionBar().setTitle(splitArray[0]);
+                setTitle(splitArray[0]);
             }
             else{
                 keyUsuario = "Undefined";

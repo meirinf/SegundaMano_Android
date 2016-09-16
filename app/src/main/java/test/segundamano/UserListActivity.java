@@ -41,6 +41,9 @@ public class UserListActivity extends BaseDrawerActivity {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_user_list, frameLayout);
 
+        // Damos el título de la toolbar
+        getSupportActionBar().setTitle("Usuarios");
+
         // Flecha para volver hacia atras
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -111,6 +114,13 @@ public class UserListActivity extends BaseDrawerActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // to check current activity in the navigation drawer
+        navigationView.getMenu().getItem(1).setChecked(true);
     }
 
 
