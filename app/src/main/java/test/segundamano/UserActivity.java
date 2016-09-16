@@ -9,30 +9,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
-import com.firebase.client.Firebase;
+
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import test.segundamano.Firebase.FirebaseConfig;
-
-public class UserActivity extends AppCompatActivity {
+public class UserActivity extends BaseDrawerActivity {
 
     private ViewPager viewPager;        // Custom viewPager en el que usaremos las pestanyas
     private TabLayout pestanyas;        // TabLayout que acoplramos al view
 
-    FirebaseConfig config;                      // Configuración de firebase
-    private Firebase referenciaListaUsuarios;   // Apunta a la lista de usuarios
-
-    TextView descripcion;
-    TextView resumenUser;
     ImageView imagen;
 
     @Override
@@ -62,8 +52,8 @@ public class UserActivity extends AppCompatActivity {
         pestanyas = (TabLayout) findViewById(R.id.pestanyas);
 
         // Flecha para volver hacia atras
-        //setSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         // Recibimos el paquete con la key del usuario que queremos cargar
 
@@ -89,7 +79,7 @@ public class UserActivity extends AppCompatActivity {
                         .into(imagen);
 
                 // Le damos titulo al toolbar
-                getSupportActionBar().setTitle(splitArray[0]);
+                setTitle(splitArray[0]);
             }
             else{
                 keyUsuario = "Undefined";

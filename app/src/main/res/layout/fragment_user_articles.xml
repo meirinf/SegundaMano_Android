@@ -19,6 +19,8 @@
             android:id="@+id/user_articles_grid"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:stretchMode="columnWidth"
             android:numColumns="auto_fit"/>
 
     </RelativeLayout>

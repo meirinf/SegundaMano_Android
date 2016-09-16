@@ -8,10 +8,7 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <include
-        layout="@layout/app_bar_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <include layout="@layout/app_bar_main"/>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
@@ -25,5 +22,6 @@
         app:itemTextColor="#F5D3F0"
         app:itemTextAppearance="@style/NavigationDrawerStyle"
         />
+" />
 
 </android.support.v4.widget.DrawerLayout>
